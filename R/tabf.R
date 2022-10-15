@@ -2,6 +2,17 @@ if(!require("tidyverse")) install.packages("tidyverse")
 if(!require("htmlTable")) install.packages("htmlTable")
 if(!require("broom")) install.packages("broom")
 
+#' Title
+#'
+#' @param dat1 a data set
+#' @param stratas a variable
+#' @param catVars a variable
+#' @param conVars a variable
+#'
+#' @return
+#' @export
+#'
+#' @examples
 tabf = function(dat1, stratas, catVars, conVars){
   options(dplyr.summarise.inform = FALSE)
   varOrder = tibble("variables"=c(catVars, conVars)) %>%
@@ -87,9 +98,25 @@ tabf = function(dat1, stratas, catVars, conVars){
   return(tab1)
 }  %>% suppressWarnings()
 
+#' Title
+#'
+#' @param mod a logistic regression model
+#'
+#' @return
+#' @export
+#'
+#' @examples
 modsmryf=function(mod) {
   cbind(mod$coefficients %>% exp(.), confint.default(mod)%>% exp(.), mod %>% tidy() %>% select(p.value))}
 
+#' Title
+#'
+#' @param a model of logistic regression
+#'
+#' @return
+#' @export
+#'
+#' @examples
 oddf=function(a){
   if(!missing(a)){
     mm = modsmryf(a)
@@ -130,6 +157,14 @@ oddf=function(a){
 } %>% suppressWarnings()
 
 
+#' Title
+#'
+#' @param ... model of logistic regression
+#'
+#' @return
+#' @export
+#'
+#' @examples
 oddsf= function(...){
   arglist = list(...)
   #mod_list = mget(ls()) %>%
@@ -142,6 +177,14 @@ oddsf= function(...){
 }
 
 
+#' Title
+#'
+#' @param ... models of logistic regression
+#'
+#' @return
+#' @export
+#'
+#' @examples
 oddsTabf = function(...){
   arglist = list(...)
   mod1 = arglist[[1]]
