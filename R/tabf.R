@@ -124,7 +124,7 @@ oddf=function(a){
       data.frame() %>%
       setNames(c("or", "ll", "ul", "pvalue")) %>%
       mutate(keys=rownames(mm))
-    if(!is.na(a$xlevels)){
+    if(!any(is.na(a$xlevels))){
       t1 = a$xlevels
       bm1 = map(1:length(t1),function(x){tibble(variables= names(t1)[x], values = t1[[x]])}) %>% do.call(rbind, .)
     } else {
