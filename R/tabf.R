@@ -66,22 +66,18 @@ tabf = function(dat1, stratas, catVars, conVars){
     mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
 
   conPvalue=dat1 %>%
+    mutate(stratas = !!sym(stratas)) %>%
     select(stratas, conVars) %>%
-    pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
-    group_by( variables, values) %>%
-    count(!!sym(stratas)) %>%
-    pivot_wider(names_from = stratas, values_from =n) %>%
-    ungroup() %>%
-    select(-values) %>%
+    pivot_longer(-c(stratas), names_to = "variables", values_to ="values") %>%
     nest(dat = -variables) %>%
     mutate(
-      fit = map(dat,
-                ~t.test(.x)),
+      fit   =map(dat, ~t.test(.$values ~ .$stratas)),
       tidied=map(fit, tidy)
     ) %>%
     unnest(tidied) %>%
     select(variables, p.value) %>%
     mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
+
   tabPvalue = rbind(catPvalue, conPvalue)
 
   tab1 = tabDat %>%
