@@ -2,6 +2,7 @@
 
 export(modsmryf)
 export(oddf)
+export(oddf0)
 export(oddsTabf)
 export(oddsf)
 export(tabf)
