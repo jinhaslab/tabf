@@ -204,3 +204,49 @@ oddsTabf = function(...){
 
 }
 
+
+
+
+
+#' Title
+#'
+#' @param ... models of logistic regression
+#'
+#' @return
+#' @export
+#'
+#' @examples
+oddf0=function(a){
+  if(!missing(a)){
+    mm = modsmryf(a)
+    mm1 = mm%>%
+      data.frame() %>%
+      setNames(c("or", "ll", "ul", "pvalue")) %>%
+      mutate(keys=rownames(mm))
+    if(!any(is.na(a$xlevels))){
+      t1 = a$xlevels
+      bm1 = map(1:length(t1),function(x){tibble(variables= names(t1)[x], values = t1[[x]])}) %>% do.call(rbind, .)
+    } else {
+      t1 = data.frame();bm1=data.frame()
+    }
+    if(nrow(a$model %>% select(where(is.numeric))%>% unique()) >0){
+      bm2 = a$model %>% slice(1:2)%>%select(where(is.numeric))%>% pivot_longer(-c()) %>% select(variables = name) %>% mutate(values="") %>% unique()
+    } else {
+      bm2 = data.frame()
+    }
+    bm0 = rbind(bm1, bm2) %>% mutate(keys= paste0(variables, values))
+
+    atab= bm0 %>%
+      left_join(mm1, by=c("keys")) %>%
+      mutate(or = ifelse(is.na(or), 1.00, or),
+             ll = ifelse(is.na(ll), 1.00, ll),
+             ul = ifelse(is.na(ul), 1.00, ul)
+      ) %>%
+      select(variables, values, or, ll, ul)
+
+    return(atab)
+  } else {
+    atab = data.frame("variables"=c(NA), "values"=c(NA), "OR95CI"=c(NA))
+    return(atab)
+  }
+} %>% suppressWarnings()
