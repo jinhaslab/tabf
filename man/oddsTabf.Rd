@@ -7,7 +7,7 @@
 oddsTabf(...)
 }
 \arguments{
-\item{...}{models of logistic regression}
+\item{...}{models of logistic regression update}
 }
 \description{
 Title

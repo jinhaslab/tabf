@@ -117,7 +117,6 @@ modsmryf=function(mod) {
 #' @examples
 oddf=function(a){
   if(!missing(a)){
-    a = mod1
     mm = modsmryf(a)
     mm1 = mm%>%
       data.frame() %>%
@@ -189,7 +188,7 @@ oddsf= function(...){
 
 #' Title
 #'
-#' @param ... models of logistic regression
+#' @param ... models of logistic regression update
 #'
 #' @return
 #' @export
