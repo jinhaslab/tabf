@@ -20,6 +20,7 @@ tabf = function(dat1, stratas, catVars, conVars){
 
   catTab = dat1 %>%
     select(stratas, all_of(catVars)) %>%
+    mutate(across(everything(), as.character)) %>%
     pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
     group_by( variables, values) %>%
     count(!!sym(stratas)) %>%
@@ -49,6 +50,7 @@ tabf = function(dat1, stratas, catVars, conVars){
   catPvalue =
     dat1 %>%
     select(stratas, catVars) %>%
+    mutate(across(everything(), as.character)) %>%
     pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
     group_by(variables, values) %>%
     count(!!sym(stratas)) %>%
@@ -67,7 +69,7 @@ tabf = function(dat1, stratas, catVars, conVars){
 
   conPvalue=dat1 %>%
     mutate(stratas = !!sym(stratas)) %>%
-    select(stratas, conVars) %>%
+    select(stratas, all_of(conVars)) %>%
     pivot_longer(-c(stratas), names_to = "variables", values_to ="values") %>%
     nest(dat = -variables) %>%
     mutate(
@@ -115,13 +117,24 @@ modsmryf=function(mod) {
 #' @examples
 oddf=function(a){
   if(!missing(a)){
+    a = mod1
     mm = modsmryf(a)
     mm1 = mm%>%
       data.frame() %>%
       setNames(c("or", "ll", "ul", "pvalue")) %>%
       mutate(keys=rownames(mm))
     if(!any(is.na(a$xlevels))){
-      t1 = a$xlevels
+      if(length(a$xlevels) ==0){
+        tts =  a$model %>% colnames() %>% .[-1]
+        t1 = list()
+        for (i in 1:c(length(tts))){
+          t1[[tts[i]]] = c("")
+        }
+
+      } else{
+        t1 = a$xlevels
+      }
+
       bm1 = map(1:length(t1),function(x){tibble(variables= names(t1)[x], values = t1[[x]])}) %>% do.call(rbind, .)
     } else {
       t1 = data.frame();bm1=data.frame()
@@ -131,7 +144,8 @@ oddf=function(a){
     } else {
       bm2 = data.frame()
     }
-    bm0 = rbind(bm1, bm2) %>% mutate(keys= paste0(variables, values))
+    bm0 = rbind(bm1, bm2) %>% mutate(keys= paste0(variables, values)) %>%
+      unique()
 
     atab= bm0 %>%
       left_join(mm1, by=c("keys")) %>%
