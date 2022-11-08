@@ -37,6 +37,30 @@ tabChisq = function(dat1, stratas, catVars){
 #' @param dat1 a data set
 #' @param stratas a variable
 #' @param catVars a variable
+#'
+#' @return
+#' @export
+#'
+#' @examples
+tabTtest =function(dat1, stratas, conVars){
+  dat1 %>%
+    mutate(stratas = !!sym(stratas)) %>%
+    select(stratas, conVars) %>%
+    pivot_longer(-c(stratas), names_to = "variables", values_to ="values") %>%
+    nest(dat = -variables) %>%
+    mutate(
+      fit   =map(dat, ~t.test(.$values ~ .$stratas)),
+      tidied=map(fit, tidy)
+    ) %>%
+    unnest(tidied) %>%
+    select(variables, p.value) %>%
+    mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
+}
+#' Title
+#'
+#' @param dat1 a data set
+#' @param stratas a variable
+#' @param catVars a variable
 #' @param conVars a variable
 #'
 #' @return
