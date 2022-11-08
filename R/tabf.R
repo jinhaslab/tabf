@@ -7,6 +7,36 @@ if(!require("broom")) install.packages("broom")
 #' @param dat1 a data set
 #' @param stratas a variable
 #' @param catVars a variable
+#'
+#' @return
+#' @export
+#'
+#' @examples
+tabChisq = function(dat1, stratas, catVars){
+  dat1 %>%
+    select(stratas, all_of(catVars)) %>%
+    pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
+    group_by(variables, values) %>%
+    count(!!sym(stratas)) %>%
+    pivot_wider(names_from = stratas, values_from =n) %>%
+    ungroup() %>%
+    select(-values) %>%
+    nest(dat = -variables) %>%
+    mutate(
+      fit = map(dat,
+                ~chisq.test(.x)),
+      tidied = map(fit, tidy)
+    ) %>%
+    unnest(tidied) %>%
+    select(variables, p.value) %>%
+    mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
+}
+
+#' Title
+#'
+#' @param dat1 a data set
+#' @param stratas a variable
+#' @param catVars a variable
 #' @param conVars a variable
 #'
 #' @return
