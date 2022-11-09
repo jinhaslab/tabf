@@ -7,7 +7,7 @@
 modsmryf(mod)
 }
 \arguments{
-\item{mod}{a logistic regression model}
+\item{mod}{}
 }
 \description{
 Title

@@ -7,7 +7,7 @@
 oddf0(a)
 }
 \arguments{
-\item{...}{models of logistic regression}
+\item{a}{}
 }
 \description{
 Title

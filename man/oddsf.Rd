@@ -7,7 +7,7 @@
 oddsf(...)
 }
 \arguments{
-\item{...}{model of logistic regression}
+\item{...}{}
 }
 \description{
 Title

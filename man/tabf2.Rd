@@ -2,19 +2,13 @@
 % Please edit documentation in R/tabf.R
 \name{tabf2}
 \alias{tabf2}
-\title{Title rows}
+\title{Title}
 \usage{
 tabf2(dat1, stratas, catVars, conVars)
 }
 \arguments{
-\item{dat1}{a data set}
-
-\item{stratas}{a variable}
-
-\item{catVars}{a variable}
-
-\item{conVars}{a variable}
+\item{conVars}{}
 }
 \description{
-Title rows
+Title
 }

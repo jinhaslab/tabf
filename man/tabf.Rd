@@ -7,13 +7,7 @@
 tabf(dat1, stratas, catVars, conVars)
 }
 \arguments{
-\item{dat1}{a data set}
-
-\item{stratas}{a variable}
-
-\item{catVars}{a variable}
-
-\item{conVars}{a variable}
+\item{conVars}{}
 }
 \description{
 Title

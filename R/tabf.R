@@ -4,9 +4,9 @@ if(!require("broom")) install.packages("broom")
 
 #' Title
 #'
-#' @param dat1 a data set
-#' @param stratas a variable
-#' @param catVars a variable
+#' @param dat1
+#' @param stratas
+#' @param catVars
 #'
 #' @return
 #' @export
@@ -34,9 +34,9 @@ tabChisq = function(dat1, stratas, catVars){
 
 #' Title
 #'
-#' @param dat1 a data set
-#' @param stratas a variable
-#' @param catVars a variable
+#' @param dat1
+#' @param stratas
+#' @param conVars
 #'
 #' @return
 #' @export
@@ -56,12 +56,13 @@ tabTtest =function(dat1, stratas, conVars){
     select(variables, p.value) %>%
     mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
 }
+
 #' Title
 #'
-#' @param dat1 a data set
-#' @param stratas a variable
-#' @param catVars a variable
-#' @param conVars a variable
+#' @param dat1
+#' @param stratas
+#' @param catVars
+#' @param conVars
 #'
 #' @return
 #' @export
@@ -150,12 +151,12 @@ tabf = function(dat1, stratas, catVars, conVars){
   return(tab1)
 }  %>% suppressWarnings()
 
-#' Title rows
+#' Title
 #'
-#' @param dat1 a data set
-#' @param stratas a variable
-#' @param catVars a variable
-#' @param conVars a variable
+#' @param dat1
+#' @param stratas
+#' @param catVars
+#' @param conVars
 #'
 #' @return
 #' @export
@@ -246,7 +247,7 @@ tabf2 = function(dat1, stratas, catVars, conVars){
 
 #' Title
 #'
-#' @param mod a logistic regression model
+#' @param mod
 #'
 #' @return
 #' @export
@@ -257,7 +258,7 @@ modsmryf=function(mod) {
 
 #' Title
 #'
-#' @param a model of logistic regression
+#' @param a
 #'
 #' @return
 #' @export
@@ -316,7 +317,7 @@ oddf=function(a){
 
 #' Title
 #'
-#' @param ... model of logistic regression
+#' @param ...
 #'
 #' @return
 #' @export
@@ -336,7 +337,7 @@ oddsf= function(...){
 
 #' Title
 #'
-#' @param ... models of logistic regression update
+#' @param ...
 #'
 #' @return
 #' @export
@@ -371,7 +372,7 @@ oddsTabf = function(...){
 
 #' Title
 #'
-#' @param ... models of logistic regression
+#' @param a
 #'
 #' @return
 #' @export

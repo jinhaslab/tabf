@@ -7,11 +7,7 @@
 tabChisq(dat1, stratas, catVars)
 }
 \arguments{
-\item{dat1}{a data set}
-
-\item{stratas}{a variable}
-
-\item{catVars}{a variable}
+\item{catVars}{}
 }
 \description{
 Title
