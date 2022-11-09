@@ -12,7 +12,7 @@ if(!require("broom")) install.packages("broom")
 #' @export
 #'
 #' @examples
-tabChisq = function(dat1, stratas, catVars){
+tab.Chisq = function(dat1, stratas, catVars){
   dat1 %>%
     select(stratas, all_of(catVars)) %>%
     pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
@@ -32,7 +32,7 @@ tabChisq = function(dat1, stratas, catVars){
     mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
 }
 
-#' Title
+#' Title Ttest
 #'
 #' @param dat1
 #' @param stratas
@@ -42,7 +42,7 @@ tabChisq = function(dat1, stratas, catVars){
 #' @export
 #'
 #' @examples
-tabTtest =function(dat1, stratas, conVars){
+tab.Ttest =function(dat1, stratas, conVars){
   dat1 %>%
     mutate(stratas = !!sym(stratas)) %>%
     select(stratas, conVars) %>%
