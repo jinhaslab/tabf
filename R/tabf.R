@@ -302,10 +302,10 @@ oddf=function(a){
         pvalue < 0.05 ~ sprintf("<b>%.2f (%.2f-%.2f)</b>", round(or, 2), round(ll, 2), round(ul, 2)),
         TRUE ~ sprintf("%.2f (%.2f-%.2f)", round(or, 2), round(ll, 2), round(ul, 2))
       )) %>%
-      mutate(values = case_when(
-        pvalue <0.05 ~ sprintf("<b>%s</b>", values),
-        TRUE ~ values
-      )) %>%
+      #mutate(values = case_when(
+      #  pvalue <0.05 ~ sprintf("<b>%s</b>", values),
+      #  TRUE ~ values
+      #)) %>%
       select(variables, values, OR95CI)
     return(atab)
   } else {
