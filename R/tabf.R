@@ -219,71 +219,123 @@ tabf = function(dat1, stratas, catVars, conVars){
 #'
 #' @examples
 tabf2 = function(dat1, stratas, catVars, conVars){
-  options(dplyr.summarise.inform = FALSE)
-  varOrder = tibble("variables"=c(catVars, conVars)) %>%
-    mutate(order = row_number())
+  if(!missing(catVars)) {
+    varOrdercat = tibble("variables"=c(catVars)) %>%
+      mutate(order = row_number())
+  } else {varOrdercat = tibble("variables"=NULL, "order"=NULL)}
+  if (!missing(conVars)) {
+    varOrdercon = tibble("variables"=c(conVars)) %>%
+      mutate(order = row_number())
+  } else {varOrdercon = tibble("variables"=NULL, "order"=NULL)}
 
-  catTab = dat1 %>%
-    select(stratas, all_of(catVars)) %>%
-    mutate(across(everything(), as.character)) %>%
-    pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
-    group_by(!!sym(stratas), variables) %>%
-    count(values) %>%
-    mutate(prob = n/sum(n),
-           smry= sprintf("%.0f (%.1f%%)", n, prob*100)
-    ) %>%
-    select(-n, -prob) %>%
-    ungroup() %>%
-    pivot_wider(names_from = stratas, values_from =smry)
+  varOrder = rbind(varOrdercat, varOrdercon) %>% na.omit()
 
-  conTab =
-    dat1 %>%
-    select(stratas, all_of(conVars)) %>%
-    pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
-    group_by( !!sym(stratas), variables) %>%
-    summarise(avg = mean(values, na.rm =TRUE),
-              std = sd(values, na.rm =TRUE)
-    ) %>%
-    mutate(smry  = sprintf("%.1f\u00b1%.1f", avg, std)) %>%
-    select(stratas, variables, smry)%>%
-    ungroup() %>%
-    pivot_wider(names_from = stratas, values_from =smry) %>%
-    mutate(values ="")
+  if(!missing(catVars)){
+    catTab = dat1 %>%
+      select(stratas, all_of(catVars)) %>%
+      mutate(across(everything(), as.character)) %>%
+      pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
+      group_by(!!sym(stratas), variables) %>%
+      count(values) %>%
+      mutate(prob = n/sum(n),
+             smry= sprintf("%.0f (%.1f%%)", n, prob*100)
+      ) %>%
+      select(-n, -prob) %>%
+      ungroup() %>%
+      pivot_wider(names_from = stratas, values_from =smry)
+  } else {
+    catTab = dat1 %>%
+      select(stratas) %>%
+      mutate(nothing =1) %>%
+      pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
+      group_by(!!sym(stratas), variables) %>%
+      count(values) %>%
+      mutate(prob = n/sum(n),
+             smry= sprintf("%.0f (%.1f%%)", n, prob*100)
+      ) %>%
+      select(-n, -prob) %>%
+      ungroup() %>%
+      pivot_wider(names_from = stratas, values_from =smry) %>%
+      filter(variables !="nothing")
+  }
+
+
+  if(!missing(conVars)){
+    conTab =
+      dat1 %>%
+      select(stratas, all_of(conVars)) %>%
+      pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
+      group_by( !!sym(stratas), variables) %>%
+      summarise(avg = mean(values, na.rm =TRUE),
+                std = sd(values, na.rm =TRUE)
+      ) %>%
+      mutate(smry  = sprintf("%.1f\u00b1%.1f", avg, std)) %>%
+      select(stratas, variables, smry)%>%
+      ungroup() %>%
+      pivot_wider(names_from = stratas, values_from =smry) %>%
+      mutate(values ="")
+  } else {
+    conTab =
+      dat1 %>%
+      select(stratas) %>%
+      mutate(nothing =1) %>%
+      pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
+      group_by( !!sym(stratas), variables) %>%
+      summarise(avg = mean(values, na.rm =TRUE),
+                std = sd(values, na.rm =TRUE)
+      ) %>%
+      mutate(smry  = sprintf("%.1f\u00b1%.1f", avg, std)) %>%
+      select(stratas, variables, smry)%>%
+      ungroup() %>%
+      pivot_wider(names_from = stratas, values_from =smry) %>%
+      mutate(values ="") %>%
+      filter(variables !="nothing")
+
+  }
+
   tabDat = rbind(catTab, conTab)
 
+  if(!missing(catVars)){
+    catPvalue =
+      dat1 %>%
+      select(stratas, catVars) %>%
+      mutate(across(everything(), as.character)) %>%
+      pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
+      group_by(variables, values) %>%
+      count(!!sym(stratas)) %>%
+      pivot_wider(names_from = stratas, values_from =n) %>%
+      ungroup() %>%
+      select(-values) %>%
+      nest(dat = -variables) %>%
+      mutate(
+        fit = map(dat,
+                  ~chisq.test(.x)),
+        tidied = map(fit, tidy)
+      ) %>%
+      unnest(tidied) %>%
+      select(variables, p.value) %>%
+      mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
+  } else {
+    catPvalue = data.frame(variables=c(""), p.value=c(""))
+  }
 
-  catPvalue =
-    dat1 %>%
-    select(stratas, catVars) %>%
-    mutate(across(everything(), as.character)) %>%
-    pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
-    group_by(variables, values) %>%
-    count(!!sym(stratas)) %>%
-    pivot_wider(names_from = stratas, values_from =n) %>%
-    ungroup() %>%
-    select(-values) %>%
-    nest(dat = -variables) %>%
-    mutate(
-      fit = map(dat,
-                ~chisq.test(.x)),
-      tidied = map(fit, tidy)
-    ) %>%
-    unnest(tidied) %>%
-    select(variables, p.value) %>%
-    mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
+  if(!missing(conVars)){
+    conPvalue=dat1 %>%
+      mutate(stratas = !!sym(stratas)) %>%
+      select(stratas, all_of(conVars)) %>%
+      pivot_longer(-c(stratas), names_to = "variables", values_to ="values") %>%
+      nest(dat = -variables) %>%
+      mutate(
+        fit   =map(dat, ~t.test(.$values ~ .$stratas)),
+        tidied=map(fit, tidy)
+      ) %>%
+      unnest(tidied) %>%
+      select(variables, p.value) %>%
+      mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
+  } else {
+    conPvalue = data.frame(variables=c(""), p.value=c(""))
+  }
 
-  conPvalue=dat1 %>%
-    mutate(stratas = !!sym(stratas)) %>%
-    select(stratas, all_of(conVars)) %>%
-    pivot_longer(-c(stratas), names_to = "variables", values_to ="values") %>%
-    nest(dat = -variables) %>%
-    mutate(
-      fit   =map(dat, ~t.test(.$values ~ .$stratas)),
-      tidied=map(fit, tidy)
-    ) %>%
-    unnest(tidied) %>%
-    select(variables, p.value) %>%
-    mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
 
   tabPvalue = rbind(catPvalue, conPvalue)
 
