@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{tabf2}
 \alias{tabf2}
-\title{Title}
+\title{Table 1 for public health (row sum)}
 \usage{
 tabf2(dat1, stratas, catVars, conVars)
 }
@@ -10,5 +10,5 @@ tabf2(dat1, stratas, catVars, conVars)
 \item{conVars}{}
 }
 \description{
-Title
+Table 1 for public health (row sum)
 }

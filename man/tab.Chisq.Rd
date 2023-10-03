@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{tab.Chisq}
 \alias{tab.Chisq}
-\title{Title}
+\title{Chisq test}
 \usage{
 tab.Chisq(dat1, stratas, catVars)
 }
@@ -10,5 +10,5 @@ tab.Chisq(dat1, stratas, catVars)
 \item{catVars}{}
 }
 \description{
-Title
+Chisq test
 }

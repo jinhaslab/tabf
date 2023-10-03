@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{oddf}
 \alias{oddf}
-\title{Title}
+\title{logistic regression model summary}
 \usage{
 oddf(a)
 }
@@ -10,5 +10,5 @@ oddf(a)
 \item{a}{}
 }
 \description{
-Title
+logistic regression model summary
 }

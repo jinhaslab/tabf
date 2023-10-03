@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{modsmryf}
 \alias{modsmryf}
-\title{Title}
+\title{logistic regression model summary}
 \usage{
 modsmryf(mod)
 }
@@ -10,5 +10,5 @@ modsmryf(mod)
 \item{mod}{}
 }
 \description{
-Title
+logistic regression model summary
 }

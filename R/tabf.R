@@ -1,9 +1,4 @@
-if(!require("tidyverse")) install.packages("tidyverse")
-if(!require("htmlTable")) install.packages("htmlTable")
-if(!require("broom")) install.packages("broom")
-if(!require("labelled")) install.packages("labelled")
-
-#' Title
+#' Chisq test
 #'
 #' @param dat1
 #' @param stratas
@@ -34,7 +29,7 @@ tab.Chisq = function(dat1, stratas, catVars){
     mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
 }
 
-#' Title Ttest
+#' T-test
 #'
 #' @param dat1
 #' @param stratas
@@ -60,7 +55,7 @@ tab.Ttest =function(dat1, stratas, conVars){
     mutate(p.value = ifelse(p.value <0.001, "<0.001", sprintf("%.3f", p.value)))
 }
 
-#' Title
+#' table 1 functon for public health (col sum)
 #'
 #' @param dat1
 #' @param stratas
@@ -209,7 +204,7 @@ tabf = function(dat1, stratas, catVars, conVars){
 
 
 
-#' Title
+#' Table 1 for public health (row sum)
 #'
 #' @param dat1
 #' @param stratas
@@ -356,7 +351,7 @@ tabf2 = function(dat1, stratas, catVars, conVars){
   return(tab1)
 }  %>% suppressWarnings()
 
-#' Title
+#' logistic regression model summary
 #'
 #' @param mod
 #'
@@ -367,7 +362,7 @@ tabf2 = function(dat1, stratas, catVars, conVars){
 modsmryf=function(mod) {
   cbind(mod$coefficients %>% exp(.), confint.default(mod)%>% exp(.), mod %>% tidy() %>% select(p.value))}
 
-#' Title
+#' logistic regression model summary
 #'
 #' @param a
 #'
@@ -426,7 +421,7 @@ oddf=function(a){
 } %>% suppressWarnings()
 
 
-#' Title
+#' Two or more logistic regression model summary table
 #'
 #' @param ...
 #'
@@ -446,7 +441,7 @@ oddsf= function(...){
 }
 
 
-#' Title
+#' Two or more logistic regression model summary table with html
 #'
 #' @param ...
 #'
@@ -481,7 +476,7 @@ oddsTabf = function(...){
 
 
 
-#' Title
+#' Two or more logistic regression model data.frame
 #'
 #' @param a
 #'

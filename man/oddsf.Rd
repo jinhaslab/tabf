@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{oddsf}
 \alias{oddsf}
-\title{Title}
+\title{Two or more logistic regression model summary table}
 \usage{
 oddsf(...)
 }
@@ -10,5 +10,5 @@ oddsf(...)
 \item{...}{}
 }
 \description{
-Title
+Two or more logistic regression model summary table
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{tabf}
 \alias{tabf}
-\title{Title}
+\title{table 1 functon for public health (col sum)}
 \usage{
 tabf(dat1, stratas, catVars, conVars)
 }
@@ -10,5 +10,5 @@ tabf(dat1, stratas, catVars, conVars)
 \item{conVars}{}
 }
 \description{
-Title
+table 1 functon for public health (col sum)
 }

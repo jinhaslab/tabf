@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{tab.Ttest}
 \alias{tab.Ttest}
-\title{Title Ttest}
+\title{T-test}
 \usage{
 tab.Ttest(dat1, stratas, conVars)
 }
@@ -10,5 +10,5 @@ tab.Ttest(dat1, stratas, conVars)
 \item{conVars}{}
 }
 \description{
-Title Ttest
+T-test
 }

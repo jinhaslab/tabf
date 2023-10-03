@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabf.R
 \name{oddf0}
 \alias{oddf0}
-\title{Title}
+\title{Two or more logistic regression model data.frame}
 \usage{
 oddf0(a)
 }
@@ -10,5 +10,5 @@ oddf0(a)
 \item{a}{}
 }
 \description{
-Title
+Two or more logistic regression model data.frame
 }
