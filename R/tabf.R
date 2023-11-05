@@ -10,6 +10,7 @@
 #' @examples
 tab.Chisq = function(dat1, stratas, catVars){
   var_label(dat1) <- NULL
+  dat1 = remove_labels(dat1)
   dat1 %>%
     select(stratas, all_of(catVars)) %>%
     pivot_longer(-c(stratas), names_to = "variables", values_to ="values")%>%
@@ -41,6 +42,7 @@ tab.Chisq = function(dat1, stratas, catVars){
 #' @examples
 tab.Ttest =function(dat1, stratas, conVars){
   var_label(dat1) <- NULL
+  dat1 = remove_labels(dat1)
   dat1 %>%
     mutate(stratas = !!sym(stratas)) %>%
     select(stratas, conVars) %>%
@@ -68,6 +70,7 @@ tab.Ttest =function(dat1, stratas, conVars){
 #' @examples
 tabf = function(dat1, stratas, catVars, conVars){
   var_label(dat1) <- NULL
+  dat1 = remove_labels(dat1)
 
   if(!missing(catVars)) {
     varOrdercat = tibble("variables"=c(catVars)) %>%
@@ -217,6 +220,7 @@ tabf = function(dat1, stratas, catVars, conVars){
 #' @examples
 tabf2 = function(dat1, stratas, catVars, conVars){
   var_label(dat1) <- NULL
+  dat1 = remove_labels(dat1)
   if(!missing(catVars)) {
     varOrdercat = tibble("variables"=c(catVars)) %>%
       mutate(order = row_number())
