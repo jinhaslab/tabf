@@ -470,6 +470,7 @@ oddsTabf = function(...){
     ungroup() %>% select(-rank) %>%
     addHtmlTableStyle(align = 'll') %>%
     htmlTable(
+      rnames = FALSE,
       caption = sprintf("Table. OR(95%%CI) for %s", ys)
 
     )
