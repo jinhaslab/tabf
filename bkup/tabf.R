@@ -433,24 +433,15 @@ oddf=function(a){
 #' @export
 #'
 #' @examples
-oddsf = function(..., model_names = NULL){
+oddsf= function(..., model_names){
   arglist = list(...)
+  #mod_list = mget(ls()) %>%
+  #      list.filter(length(.)>1)
   tt = map(arglist, oddf) %>%
     reduce(full_join, by=c("variables", "values"))
   vl = c(length(tt)-2)
-
-  if (is.null(model_names)) {
-    model_names = paste0("Model.", as.roman(1:vl))
-  }
-
-  # Ensure that the number of models matches the number of columns
-  model_names = head(c(model_names, rep("", vl - length(model_names))), vl)
-
-  ys =  arglist[[1]]$formula[2] %>% as.character() %>% str_replace(., "\\=\\=", "of") %>%
-    str_replace_all(., '\\"', "")
-
-  tt = tt %>% setNames(c("Variables", "Values", model_names))
-
+  model_names = ifelse(missing(model_names), paste0("Model.", as.roman(1:vl)), model_names)
+  tt = tt %>% setNames(c("Variables", "Values", paste0("Model.", as.roman(1:vl))))
   return(tt)
 }
 
@@ -489,7 +480,6 @@ oddsTabf = function(..., model_names = NULL){
     )
 
 }
-
 
 
 
