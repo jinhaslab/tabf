@@ -376,16 +376,13 @@ modsmryf=function(mod) {
 #' @examples
 oddf=function(a){
   if(!missing(a)){
-    message("tabf version 0.0.1.0 - oddf() called")
     mm = modsmryf(a)
     mm1 = mm%>%
       data.frame() %>%
       setNames(c("or", "ll", "ul", "pvalue")) %>%
       mutate(keys=rownames(mm))
-    message("xlevels check: ", !any(is.na(a$xlevels)))
     if(!any(is.na(a$xlevels))){
       if(length(a$xlevels) ==0){
-        message("No xlevels found, creating empty list")
         tts =  a$model %>% colnames() %>% .[-1]
         t1 = list()
         for (i in 1:c(length(tts))){
@@ -393,25 +390,17 @@ oddf=function(a){
         }
 
       } else{
-        message("xlevels found: ", length(a$xlevels), " levels")
         t1 = a$xlevels
       }
 
-      message("Creating bm1 with ", length(t1), " variables")
       bm1 = map(1:length(t1),function(x){tibble(variables= names(t1)[x], values = t1[[x]])}) %>% do.call(rbind, .)
-      message("bm1 dimensions: ", nrow(bm1), " rows, ", ncol(bm1), " cols")
     } else {
-      message("xlevels is NA, using empty data.frame")
       t1 = data.frame();bm1=data.frame()
     }
     numeric_cols = a$model %>% select(where(is.numeric))
-    message("Numeric columns: ", ncol(numeric_cols))
     if(ncol(numeric_cols) > 0){
-      message("Processing numeric columns")
       bm2 = numeric_cols %>% slice(1:2) %>% pivot_longer(everything()) %>% select(variables = name) %>% mutate(values="") %>% unique()
-      message("bm2 dimensions: ", nrow(bm2), " rows, ", ncol(bm2), " cols")
     } else {
-      message("No numeric columns, bm2 is empty")
       bm2 = data.frame()
     }
     bm0 = rbind(bm1, bm2) %>% mutate(keys= paste0(variables, values)) %>%

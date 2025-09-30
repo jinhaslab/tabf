@@ -1,6 +1,6 @@
 Package: tabf
 Title: table function for public health
-Version: 0.0.1.0
+Version: 0.0.1.1
 Authors@R: 
     person("jinha", "yoon", , "jinhaslab@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "https://orcid.org/0000-0003-4198-2955"))
