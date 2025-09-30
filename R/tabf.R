@@ -397,8 +397,9 @@ oddf=function(a){
     } else {
       t1 = data.frame();bm1=data.frame()
     }
-    if(nrow(a$model %>% select(where(is.numeric))%>% unique()) >0){
-      bm2 = a$model %>% slice(1:2)%>%select(where(is.numeric))%>% pivot_longer(everything()) %>% select(variables = name) %>% mutate(values="") %>% unique()
+    numeric_cols = a$model %>% select(where(is.numeric))
+    if(ncol(numeric_cols) > 0){
+      bm2 = numeric_cols %>% slice(1:2) %>% pivot_longer(everything()) %>% select(variables = name) %>% mutate(values="") %>% unique()
     } else {
       bm2 = data.frame()
     }
@@ -516,8 +517,9 @@ oddf0=function(a){
     } else {
       t1 = data.frame();bm1=data.frame()
     }
-    if(nrow(a$model %>% select(where(is.numeric))%>% unique()) >0){
-      bm2 = a$model %>% slice(1:2)%>%select(where(is.numeric))%>% pivot_longer(everything()) %>% select(variables = name) %>% mutate(values="") %>% unique()
+    numeric_cols = a$model %>% select(where(is.numeric))
+    if(ncol(numeric_cols) > 0){
+      bm2 = numeric_cols %>% slice(1:2) %>% pivot_longer(everything()) %>% select(variables = name) %>% mutate(values="") %>% unique()
     } else {
       bm2 = data.frame()
     }
